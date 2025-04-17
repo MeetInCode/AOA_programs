@@ -63,4 +63,4 @@ int main()
     printf("LCS: %s\n", lcs);
 
     return 0;
-}
+} 
