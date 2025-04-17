@@ -33,12 +33,14 @@ void findSubsets(int index, int currentSum, int subsetSize, int remainingSum)
     // - not enough left to reach target
     if (index == n || currentSum > targetSum || currentSum + remainingSum < targetSum)
         return;
-
+    
+    //if above conditions are not met, then we can include the current element in subset and then branch out by following 2 recursive function ( including and excluding the current element)
+    
     // Include current element
     subset[subsetSize] = arr[index];
     findSubsets(index + 1, currentSum + arr[index], subsetSize + 1, remainingSum - arr[index]);
 
-    // Exclude current element
+    // Exclude current element - continue branching
     findSubsets(index + 1, currentSum, subsetSize, remainingSum - arr[index]);
 }
 
