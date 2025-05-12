@@ -1,70 +1,86 @@
 #include <stdio.h>
 #include <string.h>
 
-// Global strings
+// Global strings and their lengths
 char str1[] = "AGGTAB";
 char str2[] = "GXTXAYB";
-
-// Lengths of the strings
-int len1 = 6;
-int len2 = 7;
+int len1 = 6, len2 = 7;
+int dp[7][8]; // DP table to store LCS lengths
 
 // Function to find the maximum of two numbers
-int max(int a, int b) {
+int max(int a, int b)
+{
     return (a > b) ? a : b;
 }
 
-// Function to find LCS length using recursion
-int findLCSLength(int i, int j) {
-    // Base case: if any string is empty, LCS length is 0
-    if (i == 0 || j == 0)
-        return 0;
-
-    // If characters match, move diagonally ↖️
-    if (str1[i - 1] == str2[j - 1]) {
-        return 1 + findLCSLength(i - 1, j - 1);  // Diagonal ↖️
-    } else {
-        // Else, move left ← or up ↑ and take the maximum
-        int left = findLCSLength(i, j - 1);      // Left ←
-        int up   = findLCSLength(i - 1, j);      // Up ↑
-        return max(left, up);
-    }
-}
-
-// Function to construct the LCS string using recursion
-void constructLCS(int i, int j, char* lcs) {
-    // Base case: if any string is empty, stop
-    if (i == 0 || j == 0)
-        return;
-
-    // If characters match, include this character in LCS string and move diagonally ↖️
-    if (str1[i - 1] == str2[j - 1]) {
-        lcs[strlen(lcs)] = str1[i - 1];  // Add matching character to LCS
-        constructLCS(i - 1, j - 1, lcs);  // Diagonal ↖️
-    } else {
-        // Else, move left ← or up ↑ based on where we get the better result
-        if (findLCSLength(i, j - 1) > findLCSLength(i - 1, j)) {
-            constructLCS(i, j - 1, lcs);  // Move left ←
-        } else {
-            constructLCS(i - 1, j, lcs);  // Move up ↑
+// Function to find the length of the LCS using dynamic programming
+void findLCSLength()
+{
+    for (int i = 0; i <= len1; i++)
+    {
+        for (int j = 0; j <= len2; j++)
+        {
+            // If either string is empty, LCS length is 0
+            if (i == 0 || j == 0)
+            {
+                dp[i][j] = 0;
+            }
+            // If characters match, LCS length increases
+            else if (str1[i - 1] == str2[j - 1])
+            {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            }
+            // If no match, take the maximum of left or top cell
+            else
+            {
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+            }
         }
     }
 }
 
-int main() {
-    // Step 1: Calculate the length of LCS
-    int lcsLength = findLCSLength(len1, len2);
-    printf("Length of LCS = %d\n", lcsLength);
+// Function to construct and print the LCS string
+void printLCS()
+{
+    int i = len1, j = len2;
+    char lcs[dp[len1][len2] + 1]; // Array to store the LCS string
+    int index = 0;
 
-    // Step 2: Construct the actual LCS string
-    char lcs[lcsLength + 1];  // Array to store the LCS string
-    lcs[0] = '\0';  // Initialize the string as empty
+    // Trace back to build the LCS string from the DP table
+    while (i > 0 && j > 0)
+    {
+        if (str1[i - 1] == str2[j - 1])
+        {
+            lcs[index++] = str1[i - 1]; // Add matching character to LCS
+            i--;
+            j--;
+        }
+        // If no match, move to the larger value (up or left)
+        else if (dp[i - 1][j] > dp[i][j - 1])
+        {
+            i--;
+        }
+        else
+        {
+            j--;
+        }
+    }
 
-    // Construct LCS from the end of both strings
-    constructLCS(len1, len2, lcs);
+    lcs[index] = '\0'; // Null-terminate the LCS string
 
-    // Step 3: Print the LCS string
-    printf("LCS string = %s\n", lcs);
+    // Print the LCS string in reverse order
+    for (int k = index - 1; k >= 0; k--)
+    {
+        printf("%c", lcs[k]);
+    }
+    printf("\n");
+}
 
+int main()
+{
+    findLCSLength(); // Compute the LCS length using dynamic programming
+    printf("Length of LCS = %d\n", dp[len1][len2]);
+    printf("LCS string = ");
+    printLCS(); // Construct and print the LCS string
     return 0;
 }
