@@ -26,7 +26,7 @@ int findMaxRatioIndex(int n)
 int main()
 {
     int n;
-    float cap, total = 0, currWeight = 0;
+    float cap, curr_profit = 0, currWeight = 0;
 
     // Get number of items
     printf("Enter the number of items: ");
@@ -60,7 +60,7 @@ int main()
         if (currWeight + weight[idx] <= cap)
         {
             currWeight += weight[idx];
-            total += profit[idx];
+            curr_profit += profit[idx];
             printf("%d\t%.2f\t%.2f\t%.2f\t1.00\n", id[idx], profit[idx], weight[idx], ratio[idx]);
             ratio[idx] = -1; // Mark item as used
         }
@@ -69,7 +69,7 @@ int main()
         {
             float remain = cap - currWeight;
             float frac = remain / weight[idx];
-            total += profit[idx] * frac;
+            curr_profit += profit[idx] * frac;
             currWeight += remain;
             printf("%d\t%.2f\t%.2f\t%.2f\t%.2f\n", id[idx], profit[idx], weight[idx], ratio[idx], frac);
             break;
@@ -77,6 +77,6 @@ int main()
     }
 
     // Display final profit
-    printf("\nTotal Profit: %.2f\n", total);
+    printf("\nTotal Profit: %.2f\n", curr_profit);
     return 0;
 }

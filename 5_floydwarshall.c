@@ -6,15 +6,14 @@
 // Print the final distance matrix
 void printMatrix(int dist[V][V])
 {
-    printf("Shortest distances between every pair of vertices:\n");
     for (int i = 0; i < V; i++)
     {
         for (int j = 0; j < V; j++)
         {
             if (dist[i][j] == INF)
-                printf("INF\t");
+                printf("-1 ");
             else
-                printf("%d\t", dist[i][j]);
+                printf("%d ", dist[i][j]);
         }
         printf("\n");
     }

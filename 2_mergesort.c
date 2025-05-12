@@ -29,8 +29,8 @@ void merge(int array[], int left, int mid, int right)
         temp[k++] = array[j++];
 
     // Copy merged elements back to array[]
-    for (i = left, k = 0; i <= right; i++, k++)
-        array[i] = temp[k];
+    for (i = 0; i < k; i++)
+        array[left + i] = temp[i];
 }
 
 // Recursively divide and sort the array
