@@ -14,8 +14,8 @@ int h = 1; // BASE^(m-1) % MOD
 
 int main()
 {
-    n = strlen(text);
-    m = strlen(pattern);
+    n = strlen(text);    // length of text
+    m = strlen(pattern); // length of pattern
 
     // Compute hash of pattern
     for (int i = 0; i < m; i++)
@@ -32,7 +32,7 @@ int main()
     // Calculate BASE^(m-1) for rolling hash calculation
     // Used to remove the leftmost character
     for (int i = 0; i < m - 1; i++)
-        h = (h * BASE) % MOD;
+        h = (BASE * h) % MOD;
 
     // Slide the pattern over text one by one
     for (int i = 0; i <= n - m; i++)
@@ -40,15 +40,22 @@ int main()
         // Check for match if hashes are identical
         if (patHash == winHash)
         {
+            int j = 0; // pointer on pattern
+            int k = i; // pointer on text
             int match = 1;
-            for (int j = 0; j < m; j++)
+
+            // Use incrementing variables to check match
+            while (j < m)
             {
-                if (text[i + j] != pattern[j])
+                if (text[k] != pattern[j])
                 {
                     match = 0;
                     break;
                 }
+                j++;
+                k++;
             }
+
             if (match)
                 printf("Pattern found at index %d\n", i);
         }
@@ -60,7 +67,6 @@ int main()
             // Remove the leftmost digit
             winHash = (BASE * (winHash - text[i] * h) + text[i + m]) % MOD;
 
-            
             if (winHash < 0)
                 winHash += MOD;
         }

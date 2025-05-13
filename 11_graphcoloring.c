@@ -1,67 +1,66 @@
 #include <stdio.h>
 
-#define V 4  // Number of vertices in the graph
-#define M 3  // Number of colors
+#define V 4 // Number of vertices
+#define M 3 // Number of available colors
 
-int graph[V][V] = {  // The adjacency matrix representation of the graph
+char colors[M] = {'R', 'G', 'B'}; // Available colors
+char vertexColor[V];              // Stores assigned color to each vertex
+
+// Graph adjacency matrix
+int graph[V][V] = {
     {0, 1, 1, 1},
     {1, 0, 1, 0},
     {1, 1, 0, 1},
-    {1, 0, 1, 0}
-};
+    {1, 0, 1, 0}};
 
-int color[V];  // Array to store the color assigned to each vertex
-
-// Function to check if it's safe to color vertex 'v' with color 'c'
-int isSafe(int v, int c) {
-    for (int i = 0; i < V; i++) {
-        if (graph[v][i] == 1 && color[i] == c) {
-            return 0;  // If adjacent vertex has the same color, not safe
-        }
+// Check if it's safe to assign color to a vertex
+int isSafe(int vertex, char colorValue)
+{
+    for (int i = 0; i < V; i++)
+    {
+        if (graph[vertex][i] && vertexColor[i] == colorValue)
+            return 0; // Not safe if adjacent vertex has same color
     }
-    return 1;  // It's safe to color vertex 'v' with color 'c'
+    return 1; // Safe to assign
 }
 
-// Backtracking function to solve the graph coloring problem
-int graphColoring(int v) {
-    // Base case: if all vertices are assigned a color, return true
-    if (v == V) {
-        return 1;  // All vertices are colored successfully
-    }
+// Recursive function to color the graph
+int graphColoring(int vertex)
+{
+    if (vertex == V)
+        return 1; // All vertices are colored
 
-    // Try all colors for vertex 'v'
-    for (int c = 1; c <= M; c++) {
-        // Check if it's safe to color vertex 'v' with color 'c'
-        if (isSafe(v, c)) {
-            color[v] = c;  // Assign color 'c' to vertex 'v'
-            if (graphColoring(v + 1)) {
-                return 1;  // If successful, return true
-            }
-            color[v] = 0;  // Backtrack if the color doesn't lead to a solution
+    for (int i = 0; i < M; i++)
+    {
+        char colorValue = colors[i];
+        if (isSafe(vertex, colorValue))
+        {
+            vertexColor[vertex] = colorValue;
+            if (graphColoring(vertex + 1))
+                return 1;
+            vertexColor[vertex] = 0; // Backtrack
         }
     }
 
-    return 0;  // If no color can be assigned, return false
+    return 0; // No valid color found
 }
 
-void printSolution() {
-    for (int i = 0; i < V; i++) {
-        printf("Vertex %d -> Color %d\n", i, color[i]);
-    }
+// Print the color assigned to each vertex
+void printSolution()
+{
+    for (int i = 0; i < V; i++)
+        printf("Vertex %d -> Color %c\n", i, vertexColor[i]);
 }
 
-int main() {
-    // Initialize all vertices with no color (0 means no color assigned)
-    for (int i = 0; i < V; i++) {
-        color[i] = 0;
-    }
+int main()
+{
+    for (int i = 0; i < V; i++)
+        vertexColor[i] = 0; // Initialize all colors to 0 (no color)
 
-    // Start graph coloring from vertex 0
-    if (graphColoring(0)) {
-        printSolution();  // Print the solution if found
-    } else {
+    if (graphColoring(0))
+        printSolution();
+    else
         printf("Solution does not exist.\n");
-    }
 
     return 0;
 }
