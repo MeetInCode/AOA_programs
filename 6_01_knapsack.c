@@ -18,7 +18,7 @@ int knapsack(int curr_weight, int n)
     if (n == 0 || curr_weight == 0)
         return 0;
 
-    // If weight of current item is more than capacity, skip it
+    // If weight of current item is more than capacity, skip itt
     if (weight[n - 1] > curr_weight)
         return knapsack(curr_weight, n - 1);
     else

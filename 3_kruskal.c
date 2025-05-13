@@ -81,9 +81,9 @@ void kruskal(int edges[][3], int edgeCount, int vertexCount)
 
     for (int i = 0; i < edgeCount && mstEdges < vertexCount - 1; i++)
     {
-        int u = edges[i][0];
-        int v = edges[i][1];
-        int weight = edges[i][2];
+        int u = edges[i][0]; //source of i vertex
+        int v = edges[i][1]; //destination of i vertex
+        int weight = edges[i][2]; //weight between source and destination
 
         int parentU = findParent(parent, u);
         int parentV = findParent(parent, v);

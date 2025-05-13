@@ -69,7 +69,7 @@ int main()
         // Mark the new vertex as part of MST
         selected[y] = true;
 
-        // Increment edge counter
+        // Increment edge counterr
         no_edges++;
     }
 

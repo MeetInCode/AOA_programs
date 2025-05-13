@@ -31,7 +31,7 @@ void floydWarshall(int graph[V][V])
 
     // Step 2: Update distances using each vertex as an intermediate
     for (int k = 0; k < V; k++)
-    { // Intermediate vertex
+    { // Intermediate vertexx
         for (int i = 0; i < V; i++)
         { // Source vertex
             for (int j = 0; j < V; j++)

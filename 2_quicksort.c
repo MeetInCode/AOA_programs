@@ -24,7 +24,7 @@ int partition(int arr[], int low, int high) {
             j--;
         }
 
-        // If i crosses j, break the loop
+        // If i crosses j, break the loopp
         if (i > j) {
             break;
         }

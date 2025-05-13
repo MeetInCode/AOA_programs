@@ -25,7 +25,7 @@ void findLCSLength()
             {
                 dp[i][j] = 0;
             }
-            // If characters match, LCS length increases
+            // If characters match, LCS length increasess
             else if (str1[i - 1] == str2[j - 1])
             {
                 dp[i][j] = dp[i - 1][j - 1] + 1;

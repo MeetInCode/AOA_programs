@@ -5,7 +5,7 @@ int board[8];
 
 // Function to check if placing a queen at (row, col) is safe
 int isSafe(int row, int col)
-{
+{  //row means current row // check evrything for all rows till current row
     for (int i = 0; i < row; i++)
     {
         // Check if another queen is in the same column,

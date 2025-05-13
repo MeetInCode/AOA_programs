@@ -1,84 +1,64 @@
 #include <stdio.h>
-#include <limits.h>
 
-#define MAX_EDGES 100
-#define MAX_VERTICES 100
+#define V 5     // Number of vertices
+#define E 8     // Number of edges
+#define INF 99999
 
-// Bellman-Ford algorithm
-void BellmanFord(int edges[MAX_EDGES][3], int V, int E, int src)
-{
-    int dist[MAX_VERTICES];
+int main() {
+    // Each edge: u -> v with weight w
+    int edges[E][3] = {
+        {0, 1, 6},
+        {0, 2, 7},
+        {1, 2, 8},
+        {1, 3, 5},
+        {1, 4, -4},
+        {3, 1, -2},
+        {4, 3, 7},
+        {2, 4, 9}
+    };
 
-    // Step 1: Initialize distances to all vertices as infinite (INT_MAX)
-    for (int i = 0; i < V; i++)
-    {
-        dist[i] = INT_MAX;
-    }
-    dist[src] = 0; // Distance to the source is 0
+    int dist[V];         // Distance from source to each vertex
+    int i, j;
+    int source = 0;      // Starting vertex
 
-    // Step 2: Relax all edges |V| - 1 times
-    for (int i = 1; i <= V - 1; i++)
-    {
-        for (int j = 0; j < E; j++)
-        {
-            int u = edges[j][0];      // Source vertex of the edge
-            int v = edges[j][1];      // Destination vertex of the edge
-            int weight = edges[j][2]; // Weight of the edge
+    // Step 1: Initialize all distances to infinity
+    for (i = 0; i < V; i++)
+        dist[i] = INF;
+    dist[source] = 0;
 
-            if (dist[u] != INT_MAX && dist[u] + weight < dist[v])
-            {
-                dist[v] = dist[u] + weight;
+    // Step 2: Relax all edges V-1 times
+    for (i = 0; i < V - 1; i++) {
+        for (j = 0; j < E; j++) {
+            int u = edges[j][0];
+            int v = edges[j][1];
+            int w = edges[j][2];
+
+            if (dist[u] != INF && dist[u] + w < dist[v]) {
+                dist[v] = dist[u] + w;
             }
         }
     }
 
-    // Step 3: Check for negative-weight cycles
-    for (int j = 0; j < E; j++)
-    {
+    // Step 3: Check for negative weight cycle
+    for (j = 0; j < E; j++) {
         int u = edges[j][0];
         int v = edges[j][1];
-        int weight = edges[j][2];
+        int w = edges[j][2];
 
-        if (dist[u] != INT_MAX && dist[u] + weight < dist[v])
-        {
-            printf("Graph contains a negative-weight cycle\n");
-            return;
+        if (dist[u] != INF && dist[u] + w < dist[v]) {
+            printf("Graph contains a negative weight cycle\n");
+            return 0;
         }
     }
 
-    // Print the distances from the source vertex
-    printf("Vertex Distance from Source\n");
-    for (int i = 0; i < V; i++)
-    {
-        if (dist[i] == INT_MAX)
-        {
-            printf("%d \t\t INF\n", i);
-        }
+    // Step 4: Print the distances
+    printf("Vertex\tDistance from Source %d\n", source);
+    for (i = 0; i < V; i++) {
+        if (dist[i] == INF)
+            printf("%d\tINF\n", i);
         else
-        {
-            printf("%d \t\t %d\n", i, dist[i]);
-        }
+            printf("%d\t%d\n", i, dist[i]);
     }
-}
-
-int main()
-{
-    int V = 5; // Number of vertices
-    int E = 8; // Number of edges
-
-    // Array to store edges in the format [source, destination, weight]
-    int edges[MAX_EDGES][3] = {
-        {0, 1, -1},
-        {0, 2, 4},
-        {1, 2, 3},
-        {1, 3, 2},
-        {1, 4, 2},
-        {3, 2, 5},
-        {3, 1, 1},
-        {4, 3, -3}};
-
-    // Run Bellman-Ford algorithm from vertex 0
-    BellmanFord(edges, V, E, 0);
 
     return 0;
 }

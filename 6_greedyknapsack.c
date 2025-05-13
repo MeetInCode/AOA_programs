@@ -53,6 +53,8 @@ int main()
     {
         // Get next best item by ratio
         int idx = findMaxRatioIndex(n);
+
+        
         if (idx == -1)
             break;
 

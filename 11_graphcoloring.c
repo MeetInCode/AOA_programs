@@ -29,7 +29,8 @@ int graphColoring(int vertex)
 {
     if (vertex == V)
         return 1; // All vertices are colored
-
+ 
+    //m means number of colors
     for (int i = 0; i < M; i++)
     {
         char colorValue = colors[i];
